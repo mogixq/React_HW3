@@ -9,10 +9,10 @@ export default function Login() {
     }}>
       Login <br />
       <label htmlFor="usernameLogin">Username: </label>
-      <input type="text" name="username" id="usernameLogin" />
+      <input type="text" name="usernameLogin" id="usernameLogin" />
       <br />
       <label htmlFor="passwordLogin">Password: </label>
-      <input type="password" name="password" id="passwordLogin" />
+      <input type="password" name="passwordLogin" id="passwordLogin" />
       <br />
       
     </div>

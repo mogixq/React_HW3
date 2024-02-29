@@ -39,10 +39,19 @@ export default function SignIn(props) {
       email: data.get('emailLogin'),
       password: data.get('passwordLog'),
     });
+
+    if (validateLogin()) {
+        loginUser();
+    }else{console.log('User not valid, check if username and');}
+    
   };
 
 const validateLogin = () => {
+    console.log(props.usersProp);
+}
 
+const loginUser = () => {
+    console.log(props.usersProp);
 }
 
   return (
