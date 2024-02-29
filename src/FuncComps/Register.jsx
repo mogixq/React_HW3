@@ -14,7 +14,7 @@ export default function Register() {
     street: "",
     number: "",
   }); 
-  
+  //test
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
