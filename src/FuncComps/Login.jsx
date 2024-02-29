@@ -1,4 +1,6 @@
 export default function Login() {
+
+  
   return (
     <div style={{
         border:"solid black 2px",
@@ -12,6 +14,7 @@ export default function Login() {
       <label htmlFor="passwordLogin">Password: </label>
       <input type="password" name="password" id="passwordLogin" />
       <br />
+      
     </div>
   );
 }

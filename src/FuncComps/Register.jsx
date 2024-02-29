@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Register() {
+  const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -16,19 +17,29 @@ export default function Register() {
     errors: {},
   });
 
-  //updating the state with the inputs 
+  // //temp for debug
+  // useEffect(() => {
+  //   console.log(users);
+  // }),[users];
+
+  // //maybe not , could be loadUsers?
+  // useEffect(() => { 
+  //   setUsers(JSON.parse(localStorage.getItem("users")));
+  // }, []);
+
+  //updating the state with the inputs
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
-  
+
+  //can be called registerUser and the logic put in the if instead
   const handleSubmit = (event) => {
     event.preventDefault();
     if (validateForm()) {
       // Form is valid, call registerUser
       console.log(formData);
-      registerUser()
-
+      registerUser();
     } else {
       // Form is invalid, do nothing
     }
@@ -46,9 +57,9 @@ export default function Register() {
       errors.password = "Password is required";
     }
 
-    if (!formData.passwordVer) {
-      errors.passwordVer = "Password verification is required";
-    }
+    // if (!formData.passwordVer) {
+    //   errors.passwordVer = "Password verification is required";
+    // }
 
     // // if (!formData.picture) {
     // //   errors.picture = "picture is required";
@@ -61,7 +72,7 @@ export default function Register() {
     // if (!formData.lastname) {
     //   errors.lastname = "Lastname is required";
     // }
-    
+
     // if (!formData.email) {
     //   errors.email = "Email is required";
     // }
@@ -88,13 +99,14 @@ export default function Register() {
     return Object.keys(errors).length === 0;
   };
 
-  const registerUser = () => {
-    console.log("Reg");
-    let users = localStorage.getItem(users);
-
-
-
-    localStorage.setItem(key, value);
+  //add the user to the users in localstorage
+  const registerUser = () => {  
+    setUsers(JSON.parse(localStorage.getItem("users")));
+    let usersNew = [...users, formData];
+    setUsers(usersNew);
+    localStorage.setItem('users',JSON.stringify(usersNew));
+    
+    console.log('users in local storage:',users);
   };
 
   //{'\u00A0'} spacer like &nbsp
@@ -126,7 +138,7 @@ export default function Register() {
           onChange={handleChange}
         />
         <br />
-        <label htmlFor="passwordVer">Verify password: *</label>
+        <label htmlFor="passwordVer">Verify password: </label>
         <input
           type="password"
           name="passwordVer"
