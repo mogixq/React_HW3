@@ -7,7 +7,7 @@ import Login2 from "./FuncComps/Login2";
 
 function App() {
   const [users, setUsers] = useState([]);
-  const [showLogged, setShowLogged] = useState(false)
+  const [showLogged, setShowLogged] = useState('')
   const [pleaseConnect, setPleaseConnect] = useState('Please Log in')
   useEffect(() => {
     loadUsers();
