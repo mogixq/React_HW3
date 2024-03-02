@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-export default function Register() {
-  const [users, setUsers] = useState([]);
+export default function Register(props) {
+  const [users, setUsers] = useState([]); //maybe del
   const [formData, setFormData] = useState({
     username: "",
     password: "",
-    passwordVer: "",
+    passwordVer: "", //also not needed in localstorage
     picture: "",
     firstname: "",
     lastname: "",
@@ -14,18 +14,13 @@ export default function Register() {
     city: "",
     street: "",
     number: "",
-    errors: {},
+    errors: {}, //dont send to localstorage!
   });
 
   // //temp for debug
   // useEffect(() => {
   //   console.log(users);
   // }),[users];
-
-  // //maybe not , could be loadUsers?
-  // useEffect(() => { 
-  //   setUsers(JSON.parse(localStorage.getItem("users")));
-  // }, []);
 
   //updating the state with the inputs
   const handleChange = (event) => {
@@ -101,12 +96,19 @@ export default function Register() {
 
   //add the user to the users in localstorage
   const registerUser = () => {  
-    setUsers(JSON.parse(localStorage.getItem("users")));
-    let usersNew = [...users, formData];
-    setUsers(usersNew);
-    localStorage.setItem('users',JSON.stringify(usersNew));
+    // setUsers(JSON.parse(localStorage.getItem("users")));
+    // let usersNew = [...users, formData];
+    // setUsers(usersNew);
+    // localStorage.setItem('users',JSON.stringify(usersNew)); 
+    // console.log('users in local storage:',users); 
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@OLD@@@@@@@@@@@@@@@@@@@@@@@@@@
     
-    console.log('users in local storage:',users);
+    setUsers(props.usersProp);
+    // console.log(props.usersProp);
+    // // let usersNew = [...users, formData];
+    // // setUsers(usersNew);
+    // // localStorage.setItem('users',JSON.stringify(usersNew)); 
+
   };
 
   //{'\u00A0'} spacer like &nbsp
