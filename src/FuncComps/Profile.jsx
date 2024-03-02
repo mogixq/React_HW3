@@ -20,7 +20,7 @@ export default function Profile(props) {
       }}
     >
       Profile <br />
-      <h3>{user.username}</h3>
+      <h3>{user.firstname} {user.lastname}</h3>
 
       <span>temp email</span>
       <br />
@@ -28,7 +28,8 @@ export default function Profile(props) {
       <br />
       <span>temp dob</span>
       <br />
-      <button>Edit Details</button>
+      bootstrap or mui 
+      <button>Edit Details</button> 
       <button>Game</button>
       <button>Logout</button>
     </div>

@@ -17,11 +17,6 @@ export default function Register(props) {
     errors: {}, //dont send to localstorage!
   });
 
-  // //temp for debug
-  // useEffect(() => {
-  //   console.log(users);
-  // }),[users];
-
   //updating the state with the inputs
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -60,13 +55,13 @@ export default function Register(props) {
     // //   errors.picture = "picture is required";
     // // }
 
-    // if (!formData.firstname) {
-    //   errors.firstname = "Firstname is required";
-    // }
+    if (!formData.firstname) {
+      errors.firstname = "Firstname is required";
+    }
 
-    // if (!formData.lastname) {
-    //   errors.lastname = "Lastname is required";
-    // }
+    if (!formData.lastname) {
+      errors.lastname = "Lastname is required";
+    }
 
     // if (!formData.email) {
     //   errors.email = "Email is required";
@@ -95,20 +90,10 @@ export default function Register(props) {
   };
 
   //add the user to the users in localstorage
-  const registerUser = () => {  
-    // setUsers(JSON.parse(localStorage.getItem("users")));
-    // let usersNew = [...users, formData];
-    // setUsers(usersNew);
-    // localStorage.setItem('users',JSON.stringify(usersNew)); 
-    // console.log('users in local storage:',users); 
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@OLD@@@@@@@@@@@@@@@@@@@@@@@@@@
-    
-    setUsers(props.usersProp);
-    // console.log(props.usersProp);
-    // // let usersNew = [...users, formData];
-    // // setUsers(usersNew);
-    // // localStorage.setItem('users',JSON.stringify(usersNew)); 
-
+  const registerUser = () => {
+    let usersNew = [...props.usersProp, formData];
+    localStorage.setItem("users", JSON.stringify(usersNew));
+    //needs to be sent to parent!!!!!!!!!!!!!!!!!@@#!#!@#@!#@!
   };
 
   //{'\u00A0'} spacer like &nbsp
@@ -153,10 +138,22 @@ export default function Register(props) {
         <input type="file" name="picture" id="picture" />
         <br />
         <label htmlFor="firstname">First Name: </label>
-        <input type="text" name="firstname" id="firstname" />
+        <input
+          type="text"
+          name="firstname"
+          id="firstname"
+          value={formData.firstname}
+          onChange={handleChange}
+        />
         <br />
         <label htmlFor="lastname">Last Name: </label>
-        <input type="text" name="lastname" id="lastname" />
+        <input
+          type="text"
+          name="lastname"
+          id="lastname"
+          value={formData.lastname}
+          onChange={handleChange}
+        />
         <br />
         <label htmlFor="email">Email: </label>
         <input type="email" name="email" id="email" />
