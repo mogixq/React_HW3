@@ -7,25 +7,34 @@ import Login2 from "./FuncComps/Login2";
 
 function App() {
   const [users, setUsers] = useState([]);
-
-  useEffect(() => { 
+  const [showLogged, setShowLogged] = useState(false)
+  const [pleaseConnect, setPleaseConnect] = useState('Please Log in')
+  useEffect(() => {
     loadUsers();
-  },[] );
+  }, []);
 
-  useEffect(() => { 
+  useEffect(() => {
     console.log(users);
-  },[users] );
+  }, [users]);
 
   const loadUsers = () => {
-    setUsers(JSON.parse(localStorage.getItem("users")))
+    setUsers(JSON.parse(localStorage.getItem("users")));
   };
-  
+
+  const setLogged = (logged) => {
+    if (logged) {
+      setPleaseConnect('');//maybe change to check sessionstorage
+      setShowLogged(true);
+    }
+  };
+
   return (
     <>
       <Register usersProp={users} />
-      <Login />
-      <Login2 usersProp={users} />
-      <Profile />
+      <Login2 usersProp={users} sendLogged={setLogged} />
+      {pleaseConnect}
+      {showLogged && <Profile />}
+      
     </>
   );
 }

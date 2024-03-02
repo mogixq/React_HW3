@@ -35,37 +35,30 @@ export default function SignIn(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // console.log({
-    //   username: data.get("usernameLog"),
-    //   password: data.get("passwordLog"),
-    // });
-    
-    if (validateLogin(data)) {
       loginUser(data);
-    } else {
-      console.log("user is not valid, try again");
-    }
   };
 
   //   useEffect(() => {
   //     console.log(props.usersProp);
   //   },[] );
 
-  const validateLogin = (data) => {
+  const loginUser = (data) => {
     let username = data.get("usernameLog");
     let password = data.get("passwordLog");
-    return props.usersProp.some((user) => {
-      return user.username == username && user.password == password;
-    });
+
+    let user = props.usersProp.find((user) => user.username == username && user.password == password); // use only .find to get the user object or undefined
+    if (user) { // check if the user is not undefined
+      console.log("USER FOUND, logging in");
+      sessionStorage.setItem('loggedUser',JSON.stringify(user));
+      sendLogged();
+    } else {
+      console.log("user is not valid, try again");
+    }
   };
 
-  const loginUser = (data) => {
-    let loggedUser = {
-      username : data.get("usernameLog"),
-      password : data.get("passwordLog")
-    }
-    console.log(loggedUser);
-  };
+  const sendLogged = ()=>{
+    props.sendLogged(true)    
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
