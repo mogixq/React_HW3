@@ -39,32 +39,32 @@ export default function SignIn(props) {
     //   username: data.get("usernameLog"),
     //   password: data.get("passwordLog"),
     // });
-
+    
     if (validateLogin(data)) {
       loginUser(data);
     } else {
-      console.log("User not valid, check if username and");
+      console.log("user is not valid, try again");
     }
   };
 
-//   useEffect(() => { 
-//     console.log(props.usersProp);
-//   },[] );
+  //   useEffect(() => {
+  //     console.log(props.usersProp);
+  //   },[] );
 
   const validateLogin = (data) => {
     let username = data.get("usernameLog");
-    let password = data.get("passwordLog")
-    props.usersProp.forEach(user => {
-        if (user.username == username && user.password) {
-            return true;
-        }
+    let password = data.get("passwordLog");
+    return props.usersProp.some((user) => {
+      return user.username == username && user.password == password;
     });
-
   };
 
   const loginUser = (data) => {
-    console.log("loginUser");
-    console.log(props.usersProp);
+    let loggedUser = {
+      username : data.get("usernameLog"),
+      password : data.get("passwordLog")
+    }
+    console.log(loggedUser);
   };
 
   return (
