@@ -50,14 +50,14 @@ export default function SignIn(props) {
     if (user) { // check if the user is not undefined
       console.log("USER FOUND, logging in");
       sessionStorage.setItem('loggedUser',JSON.stringify(user));
-      sendLogged();
+      sendLogged('userIsLogged');
     } else {
       console.log("user is not valid, try again");
     }
   };
 
-  const sendLogged = ()=>{
-    props.sendLogged(true)    
+  const sendLogged = (whoIsLogged)=>{
+    props.sendLogged(whoIsLogged)    
   }
 
   return (

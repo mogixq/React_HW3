@@ -63,9 +63,9 @@ export default function Register(props) {
       errors.lastname = "Lastname is required";
     }
 
-    // if (!formData.email) {
-    //   errors.email = "Email is required";
-    // }
+    if (!formData.email) {
+      errors.email = "Email is required";
+    }
 
     // if (!formData.date) {
     //   errors.date = "Date is required";
@@ -91,6 +91,11 @@ export default function Register(props) {
 
   //add the user to the users in localstorage
   const registerUser = () => {
+    //TO ADD :check if local storage is null otherwise no spread operator
+    if(props.usersProp ==null){
+      localStorage.setItem("users", JSON.stringify([formData]));
+      return;
+    }
     let usersNew = [...props.usersProp, formData];
     localStorage.setItem("users", JSON.stringify(usersNew));
     //needs to be sent to parent!!!!!!!!!!!!!!!!!@@#!#!@#@!#@!
@@ -156,7 +161,13 @@ export default function Register(props) {
         />
         <br />
         <label htmlFor="email">Email: </label>
-        <input type="email" name="email" id="email" />
+        <input
+          type="email"
+          name="email"
+          id="email"
+          value={formData.email}
+          onChange={handleChange}
+        />
         <br />
         <label htmlFor="date">Date of birth:</label>
         <input type="date" name="date" id="date" />

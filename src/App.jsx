@@ -4,11 +4,15 @@ import Register from "./FuncComps/Register";
 import Login from "./FuncComps/Login";
 import Profile from "./FuncComps/Profile";
 import Login2 from "./FuncComps/Login2";
+import SystemAdmin from "./FuncComps/SystemAdmin";
 
 function App() {
   const [users, setUsers] = useState([]);
-  const [showLogged, setShowLogged] = useState('')
-  const [pleaseConnect, setPleaseConnect] = useState('Please Log in')
+  // const [showLogged, setShowLogged] = useState("");
+  const [pleaseConnect, setPleaseConnect] = useState("Please Log in");
+  const [adminIsLogged, setAdminIsLogged] = useState(false);
+  const [userIsLogged, setUserIsLogged] = useState(false);
+
   useEffect(() => {
     loadUsers();
   }, []);
@@ -22,9 +26,16 @@ function App() {
   };
 
   const setLogged = (logged) => {
-    if (logged) {
-      setPleaseConnect('');//maybe change to check sessionstorage
-      setShowLogged(true);
+    if (logged == "userIsLogged") {
+      setPleaseConnect("");
+      setUserIsLogged(true);
+    } else if (logged == "adminIsLogged") {
+      console.log("adming Logged!, handle logic");
+      setAdminIsLogged(true);
+      setPleaseConnect("");
+
+    } else if (logged == "noneIsLogged") {
+      console.log("handle none logic");
     }
   };
 
@@ -33,8 +44,8 @@ function App() {
       <Register usersProp={users} />
       <Login2 usersProp={users} sendLogged={setLogged} />
       {pleaseConnect}
-      {showLogged && <Profile />}
-      
+      {userIsLogged && <Profile />}
+      {adminIsLogged && <SystemAdmin />}
     </>
   );
 }

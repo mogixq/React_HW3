@@ -11,6 +11,14 @@ export default function Profile(props) {
     setUser(JSON.parse(sessionStorage.getItem("loggedUser")));
   };
 
+  const handleLogout = () => {
+    logoutUser(user.email);
+  };
+
+  const logoutUser = (email)=>{
+    console.log(email);
+  }
+
   return (
     <div
       style={{
@@ -22,16 +30,15 @@ export default function Profile(props) {
       Profile <br />
       <h3>{user.firstname} {user.lastname}</h3>
 
-      <span>temp email</span>
+      <span>{user.email}</span>
       <br />
       <span>temp street</span>
       <br />
       <span>temp dob</span>
       <br />
-      bootstrap or mui 
       <button>Edit Details</button> 
       <button>Game</button>
-      <button>Logout</button>
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 }
