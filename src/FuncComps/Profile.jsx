@@ -39,9 +39,9 @@ export default function Profile(props) {
 
       <span>{user.email}</span>
       <br />
-      <span>temp street</span>
+      <span>{user.street}</span>
       <br />
-      <span>temp dob</span>
+      <span>{user.date}</span>
       <br />
       <button>Edit Details</button> 
       <button>Game</button>
