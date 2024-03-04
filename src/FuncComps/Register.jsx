@@ -91,14 +91,16 @@ export default function Register(props) {
 
   //add the user to the users in localstorage
   const registerUser = () => {
-    //TO ADD :check if local storage is null otherwise no spread operator
-    if(props.usersProp ==null){
-      localStorage.setItem("users", JSON.stringify([formData]));
-      return;
-    }
-    let usersNew = [...props.usersProp, formData];
-    localStorage.setItem("users", JSON.stringify(usersNew));
-    //needs to be sent to parent!!!!!!!!!!!!!!!!!@@#!#!@#@!#@!
+    // //TO ADD :check if local storage is null otherwise no spread operator
+    // if(props.usersProp == null){
+    //   localStorage.setItem("users", JSON.stringify([formData]));
+    //   return;
+    // }
+    // let usersNew = [...props.usersProp, formData];
+    // localStorage.setItem("users", JSON.stringify(usersNew));
+    //@@@@@@ NOW IN APP COMPONENT
+    console.log('formData in registerUser ',formData);
+    props.sendNewUser(formData);
   };
 
   //{'\u00A0'} spacer like &nbsp

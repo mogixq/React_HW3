@@ -18,14 +18,15 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(users);
+    console.log('users being put in LS',users);
+    localStorage.setItem("users", JSON.stringify(users));
   }, [users]);
 
   const loadUsers = () => {
     setUsers(JSON.parse(localStorage.getItem("users")));
   };
 
-  const setLogged = (logged) => {
+  const setLogged = (logged) => { //change name of set logged
     if (logged == "userIsLogged") {
       setPleaseConnect("");
       setUserIsLogged(true);
@@ -39,11 +40,21 @@ function App() {
     }
   };
 
+  const setNewUser = (newUser) =>{
+    console.log('newUser in setNewUser ',newUser);
+    if(users == null){ //change to !users or check if users empty
+      setUsers([newUser]);
+      return;
+    }
+    let usersNew = [...users, newUser];
+    setUsers(usersNew);
+  }
+
   return (
     <>
-      <Register usersProp={users} />
+      <Register usersProp={users} sendNewUser={setNewUser}/>
       <Login2 usersProp={users} sendLogged={setLogged} />
-      {pleaseConnect}
+      {pleaseConnect} {/*maybe put this line in the profile app itself */}
       {userIsLogged && <Profile />}
       {adminIsLogged && <SystemAdmin />}
     </>

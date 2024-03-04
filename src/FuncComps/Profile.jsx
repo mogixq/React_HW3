@@ -16,7 +16,13 @@ export default function Profile(props) {
   };
 
   const logoutUser = (email)=>{
-    console.log(email);
+    let userToVerify = JSON.parse(sessionStorage.getItem("loggedUser"));
+    if (userToVerify.email == email) {
+      console.log('Logging out');
+      sessionStorage.removeItem("loggedUser");
+    }else{
+      console.log('email diff');
+    }
   }
 
   return (
