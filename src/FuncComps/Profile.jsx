@@ -20,6 +20,7 @@ export default function Profile(props) {
     if (userToVerify.email == email) {
       console.log('Logging out');
       sessionStorage.removeItem("loggedUser");
+      props.sendHide();
     }else{
       console.log('email diff');
     }

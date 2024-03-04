@@ -52,12 +52,17 @@ function App() {
     setUsers(usersNew);
   };
 
+  const hideProfile = () => {
+    setUserIsLogged(false);
+    setPleaseConnect("Please Log in");
+  }
+
   return (
     <>
       <Register usersProp={users} sendNewUser={setNewUser} />
       <Login2 usersProp={users} sendLogged={setLogged} />
       {pleaseConnect} {/*maybe put this line in the profile app itself */}
-      {userIsLogged && <Profile />}
+      {userIsLogged && <Profile sendHide={hideProfile}/>}
       {adminIsLogged && <SystemAdmin />}
     </>
   );
