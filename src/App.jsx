@@ -54,6 +54,7 @@ function App() {
 
   const hideProfile = () => {
     setUserIsLogged(false);
+    setAdminIsLogged(false);
     setPleaseConnect("Please Log in");
   }
 
@@ -63,7 +64,7 @@ function App() {
       <Login2 usersProp={users} sendLogged={setLogged} />
       {pleaseConnect} {/*maybe put this line in the profile app itself */}
       {userIsLogged && <Profile sendHide={hideProfile}/>}
-      {adminIsLogged && <SystemAdmin />}
+      {adminIsLogged && <SystemAdmin sendHide={hideProfile}/>}
     </>
   );
 }

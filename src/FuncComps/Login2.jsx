@@ -47,11 +47,16 @@ export default function SignIn(props) {
     let password = data.get("passwordLog");
 
     let user = props.usersProp.find((user) => user.username == username && user.password == password); // use only .find to get the user object or undefined
+    
+    
     if (user) { // check if the user is not undefined
       console.log("USER FOUND, logging in");
       sessionStorage.setItem('loggedUser',JSON.stringify(user));
       sendLogged('userIsLogged');
-    } else {
+    } else if (!user && data.get("usernameLog") == "admin" && data.get("passwordLog") == "ad12343211ad") {
+      sendLogged('adminIsLogged');
+    }
+    else {
       console.log("user is not valid, try again");
     }
   };
