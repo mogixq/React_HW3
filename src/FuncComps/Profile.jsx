@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import EditDetails from "./EditDetails";
 
 export default function Profile(props) {
-  const [user, setUser] = useState('');
-
+  const [user, setUser] = useState("");
+  const [editVisible, setEditVisible] = useState(false);
   useEffect(() => {
     showUserInfo();
   }, []);
@@ -15,16 +16,24 @@ export default function Profile(props) {
     logoutUser(user.email);
   };
 
-  const logoutUser = (email)=>{
+  const logoutUser = (email) => {
     let userToVerify = JSON.parse(sessionStorage.getItem("loggedUser"));
     if (userToVerify.email == email) {
-      console.log('Logging out');
+      console.log("Logging out");
       sessionStorage.removeItem("loggedUser");
       props.sendHide();
-    }else{
-      console.log('email diff');
+    } else {
+      console.log("email diff");
     }
-  }
+  };
+
+  const showEdit = () => {
+    if (editVisible) {
+      setEditVisible(false);
+      return;
+    }
+    setEditVisible(true);
+  };
 
   return (
     <div
@@ -35,17 +44,19 @@ export default function Profile(props) {
       }}
     >
       Profile <br />
-      <h3>{user.firstname} {user.lastname}</h3>
-
+      <h3>
+        {user.firstname} {user.lastname}
+      </h3>
       <span>{user.email}</span>
       <br />
       <span>{user.street}</span>
       <br />
       <span>{user.date}</span>
       <br />
-      <button>Edit Details</button> 
+      <button onClick={showEdit}>Edit Details</button>
       <button>Game</button>
-      <button onClick={handleLogout}>Logout</button>
+      <button onClick={handleLogout}>Logout</button> <br />
+      {editVisible && <EditDetails />}
     </div>
   );
 }
