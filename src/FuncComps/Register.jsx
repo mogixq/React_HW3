@@ -55,17 +55,17 @@ export default function Register(props) {
     // //   errors.picture = "picture is required";
     // // }
 
-    if (!formData.firstname) {
-      errors.firstname = "Firstname is required";
-    }
+    // if (!formData.firstname) {
+    //   errors.firstname = "Firstname is required";
+    // }
 
-    if (!formData.lastname) {
-      errors.lastname = "Lastname is required";
-    }
+    // if (!formData.lastname) {
+    //   errors.lastname = "Lastname is required";
+    // }
 
-    if (!formData.email) {
-      errors.email = "Email is required";
-    }
+    // if (!formData.email) {
+    //   errors.email = "Email is required";
+    // }
 
     // if (!formData.date) {
     //   errors.date = "Date is required";
