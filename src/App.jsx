@@ -7,18 +7,19 @@ import Login2 from "./FuncComps/Login2";
 import SystemAdmin from "./FuncComps/SystemAdmin";
 
 function App() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(false);
   // const [showLogged, setShowLogged] = useState("");
   const [pleaseConnect, setPleaseConnect] = useState("Please Log in");
   const [adminIsLogged, setAdminIsLogged] = useState(false);
   const [userIsLogged, setUserIsLogged] = useState(false);
 
   useEffect(() => {
+    console.log(localStorage);
     loadUsers();
   }, []);
 
   useEffect(() => {
-    console.log('users being put in LS',users);
+    if (users == false) {return;}
     localStorage.setItem("users", JSON.stringify(users));
   }, [users]);
 
@@ -26,7 +27,8 @@ function App() {
     setUsers(JSON.parse(localStorage.getItem("users")));
   };
 
-  const setLogged = (logged) => { //change name of set logged
+  const setLogged = (logged) => {
+    //change name of set logged
     if (logged == "userIsLogged") {
       setPleaseConnect("");
       setUserIsLogged(true);
@@ -34,25 +36,25 @@ function App() {
       console.log("adming Logged!, handle logic");
       setAdminIsLogged(true);
       setPleaseConnect("");
-
     } else if (logged == "noneIsLogged") {
       console.log("handle none logic");
     }
   };
 
-  const setNewUser = (newUser) =>{
-    console.log('newUser in setNewUser ',newUser);
-    if(users == null){ //change to !users or check if users empty
+  const setNewUser = (newUser) => {
+    console.log("newUser in setNewUser ", newUser);
+    if (users == null) {
+      //change to !users or check if users empty
       setUsers([newUser]);
       return;
     }
     let usersNew = [...users, newUser];
     setUsers(usersNew);
-  }
+  };
 
   return (
     <>
-      <Register usersProp={users} sendNewUser={setNewUser}/>
+      <Register usersProp={users} sendNewUser={setNewUser} />
       <Login2 usersProp={users} sendLogged={setLogged} />
       {pleaseConnect} {/*maybe put this line in the profile app itself */}
       {userIsLogged && <Profile />}
