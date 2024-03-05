@@ -17,6 +17,10 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import TextField from "@mui/material/TextField";
+import EditDetails from "./EditDetails";
+import Chip from "@mui/joy/Chip";
+import ChipDelete from "@mui/joy/ChipDelete";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 
 // export default function SystemAdmin(props) {
 //   const [user, setUser] = useState("");
@@ -54,6 +58,10 @@ function Row(props) {
   const users = props.row;
   const [open, setOpen] = React.useState(false);
 
+  useEffect(() => {
+    console.log("aa");
+  }, [props.sendDeleteUser]);
+
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -71,11 +79,35 @@ function Row(props) {
           {users.username}{" "}
         </TableCell>
         <TableCell align="right">
-          {users.firstname + " * " + users.lastname}
+          {users.firstname + " " + users.lastname}
         </TableCell>
         <TableCell align="right">{users.date}</TableCell>
         <TableCell align="right">{users.street + "," + users.city}</TableCell>
         <TableCell align="right">{users.email}</TableCell>
+        <TableCell>
+          {/* <Chip
+            variant="outlined"
+            color="danger"
+            //onClick={() => alert("You clicked the chip!")}
+            endDecorator={
+              <ChipDelete
+                color="danger"
+                variant="plain"
+                onClick={() => alert("You clicked the delete button!")}
+              >
+                <DeleteForever />
+              </ChipDelete>
+            }
+          >
+          </Chip> */}
+          <ChipDelete
+            color="danger"
+            variant="plain"
+            onClick={() => props.sendDeleteUser(users)}
+          >
+            <DeleteForever />
+          </ChipDelete>
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -84,43 +116,7 @@ function Row(props) {
               <Typography variant="h6" gutterBottom component="div">
                 Profile
               </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <TextField
-                        margin="normal"
-                        // fullWidth
-                        id="usernameEdit"
-                        label="Username"
-                        name="usernameEdit"
-                        placeholder="AA"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        margin="normal"
-                        // fullWidth
-                        id="usernameEdit"
-                        label="Password"
-                        name="usernameEdit"
-                      />
-                    </TableCell>
-                    <TableCell align="right">Firstname</TableCell>
-                    <TableCell align="right">Lastname</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow key={users.date}>
-                    <TableCell component="th" scope="row">
-                      {users.date}
-                    </TableCell>
-                    <TableCell>{users.username}</TableCell>
-                    <TableCell align="right">{users.firstname}</TableCell>
-                    <TableCell align="right"> {users.lastname}</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+              <EditDetails userToEdit={users} />
             </Box>
           </Collapse>
         </TableCell>
@@ -148,14 +144,65 @@ function Row(props) {
 // };
 
 //the top of the table
-export default function CollapsibleTable() {
-  const users = JSON.parse(localStorage.getItem("users"));
+export default function SystemAdmin(props) {
+  const [numberUsers, setNumberUsers] = useState(null);
+  const [users, setUsers] = useState(props.users)
+  
+  useEffect(() => {
+    setNumberUsers(users.length)
+  }, [users])
+  
+
+
+  // const renderTable = () => {
+  //   <Table aria-label="collapsible table">
+  //       <TableHead>
+  //         <TableRow>
+  //           <TableCell />
+  //           <TableCell>Username</TableCell>
+  //           <TableCell align="right">Full Name</TableCell>
+  //           <TableCell align="right">Date Of Birth</TableCell>
+  //           <TableCell align="right">Address</TableCell>
+  //           <TableCell align="right">Email</TableCell>
+  //         </TableRow>
+  //       </TableHead>
+  //       <TableBody>
+  //         {users &&
+  //           users.map((user) => (
+  //             <Row
+  //               key={user?.username}
+  //               row={user}
+  //               sendDeleteUser={sendDeleteUser}
+  //             />
+  //           ))}
+  //       </TableBody>
+  //     </Table>
+  // }
+ 
+  const sendDeleteUser = (user) => {
+    props.sendDeleteUser(user);
+    setUsers(props.users)
+  };
+
+  const logoutUser = () => {
+    props.sendHide();
+  };
+
   return (
     <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+        onClick={logoutUser}
+      >
+        Logout
+      </Button>
+      <Table aria-label="collapsible table" >
         <TableHead>
           <TableRow>
-            <TableCell />
+            <TableCell>No. {numberUsers}</TableCell>
             <TableCell>Username</TableCell>
             <TableCell align="right">Full Name</TableCell>
             <TableCell align="right">Date Of Birth</TableCell>
@@ -165,9 +212,71 @@ export default function CollapsibleTable() {
         </TableHead>
         <TableBody>
           {users &&
-            users.map((user) => <Row key={user?.username} row={user} />)}
+            users.map((user) => (
+              <Row
+                key={user?.username}
+                row={user}
+                sendDeleteUser={sendDeleteUser}
+              />
+            ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
+}
+
+{
+  /* <Table size="small" aria-label="purchases">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <TextField
+                        margin="normal"
+                        // fullWidth
+                        id="usernameEdit"
+                        label="Username"
+                        name="usernameEdit"
+                        placeholder="AA"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        margin="normal"
+                        // fullWidth
+                        id="passwordEdit"
+                        label="Password"
+                        name="passwordEdit"
+                      />
+                    </TableCell>
+                    <TableCell align="right">
+                      <TextField
+                        margin="normal"
+                        // fullWidth
+                        id="passwordVerEdit"
+                        label="Confirm Password"
+                        name="passwordVerEdit"
+                      />
+                    </TableCell>
+                    <TableCell align="right">
+                      <TextField
+                        margin="normal"
+                        // fullWidth
+                        id="passwordVerEdit"
+                        label="Confirm Password"
+                        name="passwordVerEdit"
+                      />
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow key={users.date}>
+                    <TableCell component="th" scope="row">
+                      {users.date}
+                    </TableCell>
+                    <TableCell>{users.username}</TableCell>
+                    <TableCell align="right">{users.firstname}</TableCell>
+                    <TableCell align="right"> {users.lastname}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table> */
 }
