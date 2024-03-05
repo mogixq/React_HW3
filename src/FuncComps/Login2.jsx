@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect } from "react";
 
+
 // function Copyright(props) {
 //   return (
 //     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -53,7 +54,7 @@ export default function SignIn(props) {
       console.log("USER FOUND, logging in");
       sessionStorage.setItem('loggedUser',JSON.stringify(user));
       sendLogged('userIsLogged');
-    } else if (!user && data.get("usernameLog") == "admin" && data.get("passwordLog") == "ad12343211ad") {
+    } else if (!user && data.get("usernameLog") == "admin" && data.get("passwordLog") == "admin") {
       sendLogged('adminIsLogged');
     }
     else {

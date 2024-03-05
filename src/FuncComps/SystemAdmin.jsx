@@ -1,23 +1,22 @@
-
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-
+import * as React from "react";
+import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import TextField from "@mui/material/TextField";
 
 // export default function SystemAdmin(props) {
 //   const [user, setUser] = useState("");
@@ -57,7 +56,7 @@ function Row(props) {
 
   return (
     <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -67,8 +66,13 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row"> {users.username} </TableCell>
-        <TableCell align="right">{users.firstname + " " + users.lastname}</TableCell>
+        <TableCell component="th" scope="row">
+          {" "}
+          {users.username}{" "}
+        </TableCell>
+        <TableCell align="right">
+          {users.firstname + " * " + users.lastname}
+        </TableCell>
         <TableCell align="right">{users.date}</TableCell>
         <TableCell align="right">{users.street + "," + users.city}</TableCell>
         <TableCell align="right">{users.email}</TableCell>
@@ -83,21 +87,38 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Username</TableCell>
+                    <TableCell>
+                      <TextField
+                        margin="normal"
+                        // fullWidth
+                        id="usernameEdit"
+                        label="Username"
+                        name="usernameEdit"
+                        placeholder="AA"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        margin="normal"
+                        // fullWidth
+                        id="usernameEdit"
+                        label="Password"
+                        name="usernameEdit"
+                      />
+                    </TableCell>
                     <TableCell align="right">Firstname</TableCell>
                     <TableCell align="right">Lastname</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                    <TableRow key={users.date}>
-                      <TableCell component="th" scope="row">
-                        {users.date}
-                      </TableCell>
-                      <TableCell>{users.username}</TableCell>
-                      <TableCell align="right">{users.firstname}</TableCell>
-                      <TableCell align="right"> {users.lastname}</TableCell>
-                    </TableRow>
+                  <TableRow key={users.date}>
+                    <TableCell component="th" scope="row">
+                      {users.date}
+                    </TableCell>
+                    <TableCell>{users.username}</TableCell>
+                    <TableCell align="right">{users.firstname}</TableCell>
+                    <TableCell align="right"> {users.lastname}</TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </Box>
@@ -135,18 +156,16 @@ export default function CollapsibleTable() {
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell>Username</TableCell>
+            <TableCell align="right">Full Name</TableCell>
+            <TableCell align="right">Date Of Birth</TableCell>
+            <TableCell align="right">Address</TableCell>
+            <TableCell align="right">Email</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          { users && users.map((user) => (
-            <Row key={user?.username} row={user} />
-            ))
-          }
+          {users &&
+            users.map((user) => <Row key={user?.username} row={user} />)}
         </TableBody>
       </Table>
     </TableContainer>
