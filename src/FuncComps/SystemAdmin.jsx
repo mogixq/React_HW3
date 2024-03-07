@@ -58,10 +58,6 @@ function Row(props) {
   const users = props.row;
   const [open, setOpen] = React.useState(false);
 
-  useEffect(() => {
-    console.log("aa");
-  }, [props.sendDeleteUser]);
-
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -146,11 +142,16 @@ function Row(props) {
 //the top of the table
 export default function SystemAdmin(props) {
   const [numberUsers, setNumberUsers] = useState(null);
-  const [users, setUsers] = useState(props.users)
+  const [users, setUsers] = useState([])
   
   useEffect(() => {
     setNumberUsers(users.length)
   }, [users])
+
+  useEffect(() => {
+    setUsers(props.users);
+    console.log("set users in sysad");
+  }, [props.users]); 
   
 
 

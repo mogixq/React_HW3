@@ -23,6 +23,11 @@ function App() {
     if (users == false) {
       return;
     }
+    if (users == 'meow') {
+      console.log("empty users");
+      localStorage.setItem("users", JSON.stringify([]));
+      return;
+    }
     localStorage.setItem("users", JSON.stringify(users));
   }, [users]);
 
@@ -71,9 +76,15 @@ function App() {
     let tempUser = users.find((temp) => user.email == temp.email);
 
     if (tempUser) {
-      users.splice(tempUser, 1);
-      setUsers(users);
-      localStorage.setItem("users", JSON.stringify(users));
+      let keep = users.filter((temp) => temp.email !== user.email);
+      if (users.length == 1) {
+        console.log('sending meow');
+        setUsers('meow');
+        return;
+      }
+      console.log(keep);
+      setUsers(keep);
+      // localStorage.setItem("users", JSON.stringify(users));
     } else {
       console.log("user not found");
     }
