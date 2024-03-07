@@ -55,8 +55,12 @@ import DeleteForever from "@mui/icons-material/DeleteForever";
 // }
 
 function Row(props) {
-  const users = props.row;
+  const user = props.row;
   const [open, setOpen] = React.useState(false);
+
+  const userToEdit = (user) => {
+    props.userToEdit(user);
+  };
 
   return (
     <React.Fragment>
@@ -72,34 +76,19 @@ function Row(props) {
         </TableCell>
         <TableCell component="th" scope="row">
           {" "}
-          {users.username}{" "}
+          {user.username}{" "}
         </TableCell>
         <TableCell align="right">
-          {users.firstname + " " + users.lastname}
+          {user.firstname + " " + user.lastname}
         </TableCell>
-        <TableCell align="right">{users.date}</TableCell>
-        <TableCell align="right">{users.street + "," + users.city}</TableCell>
-        <TableCell align="right">{users.email}</TableCell>
+        <TableCell align="right">{user.date}</TableCell>
+        <TableCell align="right">{user.street + "," + user.city}</TableCell>
+        <TableCell align="right">{user.email}</TableCell>
         <TableCell>
-          {/* <Chip
-            variant="outlined"
-            color="danger"
-            //onClick={() => alert("You clicked the chip!")}
-            endDecorator={
-              <ChipDelete
-                color="danger"
-                variant="plain"
-                onClick={() => alert("You clicked the delete button!")}
-              >
-                <DeleteForever />
-              </ChipDelete>
-            }
-          >
-          </Chip> */}
           <ChipDelete
             color="danger"
             variant="plain"
-            onClick={() => props.sendDeleteUser(users)}
+            onClick={() => props.sendDeleteUser(user)}
           >
             <DeleteForever />
           </ChipDelete>
@@ -112,7 +101,7 @@ function Row(props) {
               <Typography variant="h6" gutterBottom component="div">
                 Profile
               </Typography>
-              <EditDetails userToEdit={users} />
+              <EditDetails user={user} userToEdit={userToEdit} />
             </Box>
           </Collapse>
         </TableCell>
@@ -142,18 +131,15 @@ function Row(props) {
 //the top of the table
 export default function SystemAdmin(props) {
   const [numberUsers, setNumberUsers] = useState(null);
-  const [users, setUsers] = useState([])
-  
+  const [users, setUsers] = useState([]);
+
   useEffect(() => {
-    setNumberUsers(users.length)
-  }, [users])
+    setNumberUsers(users.length);
+  }, [users]);
 
   useEffect(() => {
     setUsers(props.users);
-    console.log("set users in sysad");
-  }, [props.users]); 
-  
-
+  }, [props.users]);
 
   // const renderTable = () => {
   //   <Table aria-label="collapsible table">
@@ -179,14 +165,18 @@ export default function SystemAdmin(props) {
   //       </TableBody>
   //     </Table>
   // }
- 
+
   const sendDeleteUser = (user) => {
     props.sendDeleteUser(user);
-    setUsers(props.users)
+    setUsers(props.users);
   };
 
   const logoutUser = () => {
     props.sendHide();
+  };
+
+  const userToEdit = (user) => {
+    props.userToEdit(user);
   };
 
   return (
@@ -200,7 +190,7 @@ export default function SystemAdmin(props) {
       >
         Logout
       </Button>
-      <Table aria-label="collapsible table" >
+      <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell>No. {numberUsers}</TableCell>
@@ -218,6 +208,7 @@ export default function SystemAdmin(props) {
                 key={user?.username}
                 row={user}
                 sendDeleteUser={sendDeleteUser}
+                userToEdit={userToEdit}
               />
             ))}
         </TableBody>

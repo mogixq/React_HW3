@@ -1,27 +1,17 @@
 import { useState } from "react"
 
 export default function EditDetails(props) {
-  const [user, setUser] = useState(props.userToEdit)
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-    passwordVer: "", //also not needed in localstorage
-    picture: "",
-    firstname: "",
-    lastname: "",
-    email: "",
-    date: "",
-    city: "",
-    street: "",
-    number: "",
-    errors: {}, //dont send to localstorage!
-  });
+  const [user, setUser] = useState(props.user)
   
-  const editUser = (event) => {
+  const updateForm = (event) => {
     const { name, value } = event.target;
+    console.log(name+" aa "+value);
     setUser({...user, [name] : value})
   }
 
+  const handleSubmit = () => {
+    props.userToEdit(user);
+  }
 
   return (
     <div
@@ -32,14 +22,14 @@ export default function EditDetails(props) {
       }}
     >
       Register <br />
-      <form onSubmit={editUser}>
+      <form onSubmit={updateForm}>
         <label htmlFor="username">Username: *</label>
         <input
           type="text"
           name="username"
           id="username"
-          value={formData.username}
-          onChange={editUser}
+          //value={formData.username}
+          onChange={updateForm}
         />
         <br />
         <label htmlFor="password">Password: *</label>
@@ -47,8 +37,8 @@ export default function EditDetails(props) {
           type="password"
           name="password"
           id="password"
-          value={formData.password}
-          onChange={editUser}
+          //value={formData.password}
+          onChange={updateForm}
         />
         <br />
         <label htmlFor="passwordVer">Verify password: </label>
@@ -56,8 +46,8 @@ export default function EditDetails(props) {
           type="password"
           name="passwordVer"
           id="passwordVer"
-          value={formData.passwordVer}
-          onChange={editUser}
+          //value={formData.passwordVer}
+          onChange={updateForm}
         />
         <br />
         <label htmlFor="picture">Picture: </label>
@@ -68,8 +58,8 @@ export default function EditDetails(props) {
           type="text"
           name="firstname"
           id="firstname"
-          value={formData.firstname}
-          onChange={editUser}
+          //value={formData.firstname}
+          onChange={updateForm}
         />
         <br />
         <label htmlFor="lastname">Last Name: </label>
@@ -77,8 +67,8 @@ export default function EditDetails(props) {
           type="text"
           name="lastname"
           id="lastname"
-          value={formData.lastname}
-          onChange={editUser}
+          //value={formData.lastname}
+          onChange={updateForm}
         />
         <br />
         <label htmlFor="email">Email: </label>
@@ -86,8 +76,8 @@ export default function EditDetails(props) {
           type="email"
           name="email"
           id="email"
-          value={formData.email}
-          onChange={editUser}
+          //value={formData.email}
+          onChange={updateForm}
         />
         <br />
         <label htmlFor="date">Date of birth:</label>
@@ -103,7 +93,7 @@ export default function EditDetails(props) {
         <input type="number" name="number" id="number" />
         <br />
       </form>
-      <input type="submit" value="Submit" onClick={editUser} />
+      <input type="submit" value="Submit" onClick={handleSubmit} />
     </div>
   )
 }

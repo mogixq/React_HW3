@@ -35,6 +35,10 @@ export default function Profile(props) {
     setEditVisible(true);
   };
 
+  const userToEdit = (user) => {
+    props.sendUpdateUser(user)
+  }
+
   return (
     <div
       style={{
@@ -56,7 +60,7 @@ export default function Profile(props) {
       <button onClick={showEdit}>Edit Details</button>
       <button>Game</button>
       <button onClick={handleLogout}>Logout</button> <br />
-      {editVisible && <EditDetails />}
+      {editVisible && <EditDetails userToEdit={userToEdit} user={user} />}
     </div>
   );
 }

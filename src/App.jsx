@@ -20,12 +20,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (users == false) {
-      return;
-    }
-    if (users == 'meow') {
-      console.log("empty users");
-      localStorage.setItem("users", JSON.stringify([]));
+    if (users === false) {
       return;
     }
     localStorage.setItem("users", JSON.stringify(users));
@@ -77,11 +72,10 @@ function App() {
 
     if (tempUser) {
       let keep = users.filter((temp) => temp.email !== user.email);
-      if (users.length == 1) {
-        console.log('sending meow');
-        setUsers('meow');
-        return;
-      }
+      // if (users.length == 1) {
+      //   setUsers([]);
+      //   return;
+      // }
       console.log(keep);
       setUsers(keep);
       // localStorage.setItem("users", JSON.stringify(users));
@@ -93,7 +87,9 @@ function App() {
   const editUser = (user) => {
     let updatedArr = users.map((temp) => {
       if (temp.email == user.email) {
-        temp = user;
+        return user;
+      } else {
+        return temp;
       }
     });
     setUsers(updatedArr);
@@ -104,13 +100,15 @@ function App() {
       <Register usersProp={users} sendNewUser={setNewUser} />
       <Login2 usersProp={users} sendLogged={setLogged} />
       {pleaseConnect} {/*maybe put this line in the profile app itself */}
-      {userIsLogged && <Profile sendHide={hideProfile} />}
+      {userIsLogged && (
+        <Profile sendHide={hideProfile} sendUpdateUser={editUser} />
+      )}
       {adminIsLogged && (
         <SystemAdmin
           users={users}
           sendHide={hideProfile}
           sendDeleteUser={deleteUser}
-          sendUpdateUser={editUser}
+          userToEdit={editUser}
         />
       )}
     </>
