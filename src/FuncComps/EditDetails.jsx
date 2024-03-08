@@ -1,17 +1,17 @@
-import { useState } from "react"
+import { useState } from "react";
 
 export default function EditDetails(props) {
-  const [user, setUser] = useState(props.user)
-  
+  const [user, setUser] = useState(props.user);
+
   const updateForm = (event) => {
     const { name, value } = event.target;
-    console.log(name+" aa "+value);
-    setUser({...user, [name] : value})
-  }
+    console.log(name + " aa " + value);
+    setUser({ ...user, [name]: value });
+  };
 
   const handleSubmit = () => {
     props.userToEdit(user);
-  }
+  };
 
   return (
     <div
@@ -21,8 +21,8 @@ export default function EditDetails(props) {
         padding: 10,
       }}
     >
-      Register <br />
-      <form onSubmit={updateForm}>
+      Edit Details <br />
+      <form onSubmit={handleSubmit}>
         <label htmlFor="username">Username: *</label>
         <input
           type="text"
@@ -95,5 +95,5 @@ export default function EditDetails(props) {
       </form>
       <input type="submit" value="Submit" onClick={handleSubmit} />
     </div>
-  )
+  );
 }

@@ -1,7 +1,16 @@
+import * as React from 'react';
 import { useEffect, useState } from "react";
+import TextField from "@mui/material/TextField";
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { MuiTelInput } from 'mui-tel-input'
+// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 export default function Register(props) {
-  const [users, setUsers] = useState([]); //maybe del
+  const [users, setUsers] = useState({}); //maybe del
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -16,12 +25,29 @@ export default function Register(props) {
     number: "",
     errors: {}, //dont send to localstorage!
   });
+  const [value, setValue] = useState('')
+
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
 
   //updating the state with the inputs
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
+    const { name ,value } = event.target;
+    setUsers((prevState) => ({ ...prevState, [name]: value }));
   };
+
+  const numberChange = (newValue) => {
+    setValue(newValue)
+  }
 
   //can be called registerUser and the logic put in the if instead
   const handleSubmit = (event) => {
@@ -55,17 +81,17 @@ export default function Register(props) {
     // //   errors.picture = "picture is required";
     // // }
 
-    // if (!formData.firstname) {
-    //   errors.firstname = "Firstname is required";
-    // }
+    if (!formData.firstname) {
+      errors.firstname = "Firstname is required";
+    }
 
-    // if (!formData.lastname) {
-    //   errors.lastname = "Lastname is required";
-    // }
+    if (!formData.lastname) {
+      errors.lastname = "Lastname is required";
+    }
 
-    // if (!formData.email) {
-    //   errors.email = "Email is required";
-    // }
+    if (!formData.email) {
+      errors.email = "Email is required";
+    }
 
     // if (!formData.date) {
     //   errors.date = "Date is required";
@@ -91,16 +117,14 @@ export default function Register(props) {
 
   //add the user to the users in localstorage
   const registerUser = () => {
-    // //TO ADD :check if local storage is null otherwise no spread operator
-    // if(props.usersProp == null){
-    //   localStorage.setItem("users", JSON.stringify([formData]));
-    //   return;
-    // }
-    // let usersNew = [...props.usersProp, formData];
-    // localStorage.setItem("users", JSON.stringify(usersNew));
-    //@@@@@@ NOW IN APP COMPONENT
-    console.log('formData in registerUser ',formData);
-    props.sendNewUser(formData);
+    //TO ADD :check if local storage is null otherwise no spread operator
+    if (props.usersProp == null) {
+      localStorage.setItem("users", JSON.stringify([formData]));
+      return;
+    }
+    let usersNew = [...props.usersProp, formData];
+    localStorage.setItem("users", JSON.stringify(usersNew));
+    //needs to be sent to parent!!!!!!!!!!!!!!!!!@@#!#!@#@!#@!
   };
 
   //{'\u00A0'} spacer like &nbsp
@@ -114,6 +138,78 @@ export default function Register(props) {
     >
       Register <br />
       <form onSubmit={handleSubmit}>
+        <TextField
+          required
+          id="standard-required"
+          label="Username"
+          variant="standard"
+        />
+        <br />
+        <TextField
+          required
+          id="standard-required"
+          label="Password"
+          variant="standard"
+        />
+        <br />
+        <TextField
+          required
+          id="standard-required"
+          label="Verify Password"
+          variant="standard"
+        />
+        <br /><br />
+        <Button
+          component="label"
+          role={undefined}
+          variant="contained"
+          tabIndex={-1}
+          startIcon={<CloudUploadIcon />}
+        >
+          Upload Picture
+          <VisuallyHiddenInput type="file" />
+        </Button>
+        <br />
+        <TextField
+          required
+          id="standard-required"
+          label="First Name"
+          variant="standard"
+        />
+        <br />
+        <TextField
+          required
+          id="standard-required"
+          label="Last Name"
+          variant="standard"
+        />
+        <br />
+        <TextField
+          required
+          id="standard-required"
+          label="Email"
+          variant="standard"
+        />
+        <br />
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker />
+        </LocalizationProvider> */}
+        <br />
+        <TextField
+          required
+          id="standard-required"
+          label="City"
+          variant="standard"
+        />
+        <br />
+        <TextField
+          required
+          id="standard-required"
+          label="Street"
+          variant="standard"
+        />
+        <br />
+        <MuiTelInput value={value} onChange={numberChange} />
         <label htmlFor="username">Username: *</label>
         <input
           type="text"
