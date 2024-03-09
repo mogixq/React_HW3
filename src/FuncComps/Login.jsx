@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const defaultTheme = createTheme();
 
+//calls loginUser with the user data
 export default function SignIn(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -18,13 +19,14 @@ export default function SignIn(props) {
     loginUser(data);
   };
 
+  //logs the user in and handles the session storage, depending on if the user is an admin aswell
   const loginUser = (data) => {
     let username = data.get("usernameLog");
     let password = data.get("passwordLog");
 
     let user = props.usersProp.find(
       (user) => user.username == username && user.password == password
-    ); 
+    );
 
     if (user && !sessionStorage.loggedUser) {
       console.log("USER FOUND, logging in");
@@ -33,7 +35,8 @@ export default function SignIn(props) {
     } else if (
       !user &&
       data.get("usernameLog") == "admin" &&
-      data.get("passwordLog") == "admin" && !sessionStorage.loggedUser
+      data.get("passwordLog") == "admin" &&
+      !sessionStorage.loggedUser
     ) {
       sessionStorage.setItem("loggedUser", "admin");
       sendLogged("adminIsLogged");
@@ -42,6 +45,7 @@ export default function SignIn(props) {
     }
   };
 
+  //sends to app which type of user is logged(regular or admin) 
   const sendLogged = (whoIsLogged) => {
     props.sendLogged(whoIsLogged);
   };
