@@ -9,6 +9,7 @@ import { MuiTelInput } from "mui-tel-input";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import Typography from '@mui/material/Typography';
 
 export default function Register(props) {
   const [user, setUser] = useState({
@@ -54,7 +55,7 @@ export default function Register(props) {
     // Check for English characters only
     if (
       id == "username" &&
-      !value.match(/^[a-zA-Z\s\d\-\_!@#$%^&*()+\=\[\]{};':",./<>?]*$/)
+      !value.match(/^[a-zA-Z\s\d-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]*$/)
     ) {
       setErrorState({
         ...errorState,
@@ -71,7 +72,46 @@ export default function Register(props) {
       });
       return;
     }
-
+    if (id == "password" && !value.match(/^(?=.*\d)(?=.*[A-Z])(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|])[A-Za-z\d-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+$/)) {
+      setErrorState({
+        ...errorState,
+        state: true,
+        [id]: "Please enter at least one special character, one uppercase letter, and a number.",
+      });
+      return;
+    }
+    if (id == "password" && (7 > value.length || value.length > 12)) {
+      setErrorState({
+        ...errorState,
+        state: true,
+        [id]: "Please enter password length between 7 and 12 characters.",
+      });
+      return
+    }
+    if (id == "passwordVer" && value != user.password) {
+      setErrorState({
+        ...errorState,
+        state: true,
+        [id]: "Password and password verification must match.",
+      });
+      return
+    }
+    if ((id == "firstname" || id == "lastname") && !value.match(/^[a-zA-Z]+$/)) {
+      setErrorState({
+        ...errorState,
+        state: true,
+        [id]: "Please enter only letters.",
+      });
+      return
+    }
+    if (id == "email" && !value.match(/^[a-zA-Z-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+@[a-zA-Z-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+.com$/)) {
+      setErrorState({
+        ...errorState,
+        state: true,
+        [id]: "Please enter email with only letters and special characters, and with .com at the end.",
+      });
+      return
+    }
     setErrorState({ ...errorState, state: false, [id]: "" });
     setUser((prevState) => ({ ...prevState, [id]: value }));
     console.log(errorState);
@@ -96,8 +136,12 @@ export default function Register(props) {
     if (allowedTypes.includes(files[0].type)) {
       handleChange({ target: { id: id, value: files[0] } });
     } else {
-      console.log("wrong file");
-      //handle exception
+      setErrorState({
+        ...errorState,
+        state: true,
+        [id]: "Please enter file of the following format: .jpeg, .jpg",
+      });
+      console.log(errorState);
     }
   };
 
@@ -129,6 +173,10 @@ export default function Register(props) {
       return;
     }
     props.sendNewUser(user);
+  };
+
+  const buttonStyles = {
+    backgroundColor: errorState.picture ? 'red' : 'primary.main'
   };
 
   return (
@@ -165,6 +213,7 @@ export default function Register(props) {
           required
           error={errorState.password} // Display error if message exists
           helperText={errorState.password}
+          type="password"
           id="password"
           label="Password"
           variant="standard"
@@ -175,6 +224,7 @@ export default function Register(props) {
           required
           error={errorState.passwordVer} // Display error if message exists
           helperText={errorState.passwordVer}
+          type="password"
           id="passwordVer"
           label="Verify Password"
           variant="standard"
@@ -189,6 +239,7 @@ export default function Register(props) {
           variant="contained"
           tabIndex={-1}
           startIcon={<CloudUploadIcon />}
+          sx={buttonStyles}
         >
           Upload Picture
           <VisuallyHiddenInput
@@ -198,6 +249,7 @@ export default function Register(props) {
             onChange={(event) => fileChange(event.target)}
           />
         </Button>
+        {errorState.picture && <Typography color="error">{errorState.picture}</Typography>}
         <br />
         <TextField
           required
