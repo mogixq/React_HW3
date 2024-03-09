@@ -9,7 +9,9 @@ import { MuiTelInput } from "mui-tel-input";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import Typography from '@mui/material/Typography';
+import Typography from "@mui/material/Typography";
+import Autocomplete from "@mui/material/Autocomplete";
+import Avatar from "@mui/material/Avatar";
 
 export default function Register(props) {
   const [user, setUser] = useState({
@@ -40,6 +42,41 @@ export default function Register(props) {
     width: 1,
   });
 
+  const getBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
+  };
+
+  function isDateValid(dateString) {
+    // Check if the input is a valid date string
+    if (!dateString || !Date.parse(dateString)) {
+      return false;
+    }
+
+    const today = new Date();
+    const eighteenYearsAgo = new Date(
+      today.getFullYear() - 18,
+      today.getMonth(),
+      today.getDate()
+    );
+    const oneHundredTwentyYearsAgo = new Date(
+      today.getFullYear() - 120,
+      today.getMonth(),
+      today.getDate()
+    );
+
+    // Convert the input date to a Date object
+    const inputDate = new Date(dateString);
+    const x = inputDate < eighteenYearsAgo;
+    const y = inputDate > oneHundredTwentyYearsAgo;
+    // Check if the input date is between the two valid ranges
+    return inputDate < eighteenYearsAgo && inputDate > oneHundredTwentyYearsAgo;
+  }
+
   //updating the state with the inputs
   const handleChange = (event) => {
     console.log(event);
@@ -55,7 +92,9 @@ export default function Register(props) {
     // Check for English characters only
     if (
       id == "username" &&
-      !value.match(/^[a-zA-Z\s\d-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]*$/)
+      !value.match(
+        /^[a-zA-Z\s\d-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]*$/
+      )
     ) {
       setErrorState({
         ...errorState,
@@ -72,7 +111,12 @@ export default function Register(props) {
       });
       return;
     }
-    if (id == "password" && !value.match(/^(?=.*\d)(?=.*[A-Z])(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|])[A-Za-z\d-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+$/)) {
+    if (
+      id == "password" &&
+      !value.match(
+        /^(?=.*\d)(?=.*[A-Z])(?=.*[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|])[A-Za-z\d-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+$/
+      )
+    ) {
       setErrorState({
         ...errorState,
         state: true,
@@ -86,7 +130,7 @@ export default function Register(props) {
         state: true,
         [id]: "Please enter password length between 7 and 12 characters.",
       });
-      return
+      return;
     }
     if (id == "passwordVer" && value != user.password) {
       setErrorState({
@@ -94,27 +138,57 @@ export default function Register(props) {
         state: true,
         [id]: "Password and password verification must match.",
       });
-      return
+      return;
     }
-    if ((id == "firstname" || id == "lastname") && !value.match(/^[a-zA-Z]+$/)) {
+    if (
+      (id == "firstname" || id == "lastname") &&
+      !value.match(/^[a-zA-Z]+$/)
+    ) {
       setErrorState({
         ...errorState,
         state: true,
         [id]: "Please enter only letters.",
       });
-      return
+      return;
     }
-    if (id == "email" && !value.match(/^[a-zA-Z-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+@[a-zA-Z-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+.com$/)) {
+    if (
+      id == "email" &&
+      !value.match(
+        /^[a-zA-Z-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+@[a-zA-Z-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+.com$/
+      )
+    ) {
       setErrorState({
         ...errorState,
         state: true,
         [id]: "Please enter email with only letters and special characters, and with .com at the end.",
       });
-      return
+      return;
+    }
+    if (id == "city" && !cities.find((city) => city.label == value)) {
+      setErrorState({
+        ...errorState,
+        state: true,
+        [id]: "Enter the correct name of the city.",
+      });
+      return;
+    }
+    if (id == "street" && !value.match(/^[\u0590-\u05FF\u200E\u200F ]+$/)) {
+      setErrorState({
+        ...errorState,
+        state: true,
+        [id]: "Enter only hebrew letters.",
+      });
+      return;
+    }
+    if (id == "picture") {
+      setErrorState({ ...errorState, state: false, [id]: "" });
+      getBase64(value).then((base64) => {
+        setUser((prevState) => ({ ...prevState, [id]: base64 }));
+      });
+      return;
     }
     setErrorState({ ...errorState, state: false, [id]: "" });
     setUser((prevState) => ({ ...prevState, [id]: value }));
-    console.log(errorState);
     console.log(user);
   };
 
@@ -124,7 +198,15 @@ export default function Register(props) {
   };
 
   const dateChange = (newValue) => {
-    handleChange({ target: { id: "date", value: newValue } });
+    if (isDateValid(newValue.$d)) {
+      handleChange({ target: { id: "date", value: newValue.$d } });
+    } else {
+      setErrorState({
+        ...errorState,
+        state: true,
+        ["date"]: "Please enter non fictional date",
+      });
+    }
   };
 
   const fileChange = (target) => {
@@ -154,7 +236,7 @@ export default function Register(props) {
         errors = { ...errors, state: true, [field]: "This field is required" };
       }
     }
-    setErrorState(errors);
+    setErrorState((prev) => prev = errors);
     console.log(errorState);
     // if (!user.username) {
     //   setErrorState( (prev) =>  prev = {...errorState, state : true, "username" : "This field is required" })
@@ -162,7 +244,7 @@ export default function Register(props) {
     // if (!user.password) {
     //   setErrorState((prev) =>  prev = {...errorState, state : true, "password" : "This field is required" })
     // }
-    if (!errorState.state) {
+    if (!errors.state) {
       registerUser();
     }
   };
@@ -176,7 +258,26 @@ export default function Register(props) {
   };
 
   const buttonStyles = {
-    backgroundColor: errorState.picture ? 'red' : 'primary.main'
+    backgroundColor: errorState.picture ? "red" : "primary.main",
+  };
+
+  const cities = [
+    { label: "Tel Aviv" },
+    { label: "Netanya" },
+    { label: "Haifa" },
+    { label: "Holon" },
+    { label: "Yaffo" },
+    { label: "Kfar Yona" },
+    { label: "Hadera" },
+    { label: "Afula" },
+    { label: "Petah Tikva" },
+    { label: "Jerusalem" },
+  ];
+
+  const handleTagChange = (event) => {
+    console.log(event.target);
+    const { id, innerText } = event.target;
+    handleChange({ target: { id: "city", value: innerText } });
   };
 
   return (
@@ -201,7 +302,7 @@ export default function Register(props) {
         <TextField
           required
           //error={errorState}
-          error={errorState.username} // Display error if message exists
+          error={!!errorState.username} // Display error if message exists
           helperText={errorState.username}
           id="username"
           label="Username"
@@ -211,7 +312,7 @@ export default function Register(props) {
         <br />
         <TextField
           required
-          error={errorState.password} // Display error if message exists
+          error={!!errorState.password} // Display error if message exists
           helperText={errorState.password}
           type="password"
           id="password"
@@ -222,7 +323,7 @@ export default function Register(props) {
         <br />
         <TextField
           required
-          error={errorState.passwordVer} // Display error if message exists
+          error={!!errorState.passwordVer} // Display error if message exists
           helperText={errorState.passwordVer}
           type="password"
           id="passwordVer"
@@ -232,24 +333,29 @@ export default function Register(props) {
         />
         <br />
         <br />
-        <Button
-          id="picture"
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          startIcon={<CloudUploadIcon />}
-          sx={buttonStyles}
-        >
-          Upload Picture
-          <VisuallyHiddenInput
+        <div>
+          <Button
             id="picture"
-            type="file"
-            accept=".jpg,.jpeg"
-            onChange={(event) => fileChange(event.target)}
-          />
-        </Button>
-        {errorState.picture && <Typography color="error">{errorState.picture}</Typography>}
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            startIcon={<CloudUploadIcon />}
+            sx={buttonStyles}
+          >
+            Upload Picture
+            <VisuallyHiddenInput
+              id="picture"
+              type="file"
+              accept=".jpg,.jpeg"
+              onChange={(event) => fileChange(event.target)}
+            />
+          </Button>
+          {user.picture && <Avatar alt="ALA" src={user.picture} />}{" "}
+        </div>
+        {errorState.picture && (
+          <Typography color="error">{errorState.picture}</Typography>
+        )}
         <br />
         <TextField
           required
@@ -273,7 +379,7 @@ export default function Register(props) {
         <br />
         <TextField
           required
-          error={errorState.email} // Display error if message exists
+          error={!!errorState.email} // Display error if message exists
           helperText={errorState.email}
           id="email"
           label="Email"
@@ -282,15 +388,13 @@ export default function Register(props) {
         />
         <br />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            id="date"
-            onChange={dateChange}
-            error={errorState.date} // Display error if message exists
-            helperText={errorState.date}
-          />
+          <DatePicker id="date" onChange={dateChange} />
+          {!!errorState.date && (
+            <Typography color="error">{errorState.date}</Typography>
+          )}
         </LocalizationProvider>
         <br />
-        <TextField
+        {/* <TextField
           required
           error={errorState.city} // Display error if message exists
           helperText={errorState.city}
@@ -298,7 +402,27 @@ export default function Register(props) {
           label="City"
           variant="standard"
           onChange={handleChange}
+        /> */}
+
+        <Autocomplete
+          options={cities}
+          id="city"
+          // includeInputInList
+          open={
+            !!errorState.city && !cities.find((city) => city.label == user.city)
+          }
+          onChange={handleTagChange}
+          onKeyDown={handleTagChange}
+          onInputChange={handleChange}
+          // error={errorState.city} // Display error if message exists
+          // helpertext={errorState.city}
+          renderInput={(params) => (
+            <TextField {...params} label="City" variant="standard" />
+          )}
         />
+        {errorState.city && (
+          <Typography color="error">{errorState.city}</Typography>
+        )}
         <br />
         <TextField
           required
