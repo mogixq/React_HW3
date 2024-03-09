@@ -3,12 +3,12 @@ import "./App.css";
 import Register from "./FuncComps/Register";
 import Login from "./FuncComps/Login";
 import Profile from "./FuncComps/Profile";
-import Login2 from "./FuncComps/Login2";
 import SystemAdmin from "./FuncComps/SystemAdmin";
 import { Update } from "@mui/icons-material";
 
 function App() {
   const [users, setUsers] = useState(false);
+  // const [showLogged, setShowLogged] = useState("");
   const [pleaseConnect, setPleaseConnect] = useState("Please Log in");
   const [adminIsLogged, setAdminIsLogged] = useState(false);
   const [userIsLogged, setUserIsLogged] = useState(false);
@@ -30,6 +30,7 @@ function App() {
   // };
 
   const setLogged = (logged) => {
+    //change name of set logged
     if (logged == "userIsLogged") {
       setPleaseConnect("");
       setUserIsLogged(true);
@@ -96,7 +97,7 @@ function App() {
   return (
     <>
       <Register usersProp={users} sendNewUser={setNewUser} />
-      <Login2 usersProp={users} sendLogged={setLogged} />
+      <Login usersProp={users} sendLogged={setLogged} />
       {pleaseConnect} {/*maybe put this line in the profile app itself */}
       {userIsLogged && (
         <Profile sendHide={hideProfile} sendUpdateUser={editUser} />

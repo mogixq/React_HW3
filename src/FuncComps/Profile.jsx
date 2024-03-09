@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import EditDetails from "./EditDetails";
+import Avatar from "@mui/material/Avatar";
 
 export default function Profile(props) {
   const [user, setUser] = useState("");
@@ -20,7 +21,7 @@ export default function Profile(props) {
     let userToVerify = JSON.parse(sessionStorage.getItem("loggedUser"));
     if (userToVerify.email == email) {
       console.log("Logging out");
-      sessionStorage.removeItem("loggedUser");
+      sessionStorage.clear()
       props.sendHide();
     } else {
       console.log("email diff");
@@ -37,6 +38,7 @@ export default function Profile(props) {
 
   const userToEdit = (user) => {
     props.sendUpdateUser(user);
+    showEdit()
   };
 
   return (
@@ -49,6 +51,7 @@ export default function Profile(props) {
       }}
     >
       Profile <br />
+      <Avatar alt="ALA" src={user.picture}/>
       <h3>
         {user.firstname} {user.lastname}
       </h3>
@@ -68,7 +71,7 @@ export default function Profile(props) {
         Logout
       </button>{" "}
       <br />
-      {editVisible && <EditDetails userToEdit={userToEdit} user={user} />}
+      {editVisible && <EditDetails userToEdit={userToEdit} user={user} closeMe={showEdit}/>}
     </div>
   );
 }

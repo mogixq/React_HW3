@@ -71,15 +71,12 @@ export default function Register(props) {
 
     // Convert the input date to a Date object
     const inputDate = new Date(dateString);
-    const x = inputDate < eighteenYearsAgo;
-    const y = inputDate > oneHundredTwentyYearsAgo;
     // Check if the input date is between the two valid ranges
     return inputDate < eighteenYearsAgo && inputDate > oneHundredTwentyYearsAgo;
   }
 
   //updating the state with the inputs
   const handleChange = (event) => {
-    console.log(event);
     const { id, value } = event.target;
     if (!value) {
       setErrorState({
@@ -199,7 +196,13 @@ export default function Register(props) {
 
   const dateChange = (newValue) => {
     if (isDateValid(newValue.$d)) {
-      handleChange({ target: { id: "date", value: newValue.$d } });
+      let date = new Date(newValue.$d).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        separator: "/",
+      })
+      handleChange({ target: { id: "date", value: date } });
     } else {
       setErrorState({
         ...errorState,
@@ -340,7 +343,7 @@ export default function Register(props) {
             role={undefined}
             variant="contained"
             tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
+            startIcon={user.picture ? <Avatar alt="Profile" src={user.picture} /> :  <CloudUploadIcon />}
             sx={buttonStyles}
           >
             Upload Picture
@@ -351,7 +354,6 @@ export default function Register(props) {
               onChange={(event) => fileChange(event.target)}
             />
           </Button>
-          {user.picture && <Avatar alt="ALA" src={user.picture} />}{" "}
         </div>
         {errorState.picture && (
           <Typography color="error">{errorState.picture}</Typography>

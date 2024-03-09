@@ -16,43 +16,10 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import TextField from "@mui/material/TextField";
 import EditDetails from "./EditDetails";
-import Chip from "@mui/joy/Chip";
 import ChipDelete from "@mui/joy/ChipDelete";
 import DeleteForever from "@mui/icons-material/DeleteForever";
-
-// export default function SystemAdmin(props) {
-//   const [user, setUser] = useState("");
-//   const [editVisible, setEditVisible] = useState(false);
-
-//   const logoutUser = () => {
-//     props.sendHide()
-//   };
-
-//   const showEdit = () => {
-//     if (editVisible) {
-//       setEditVisible(false);
-//       return;
-//     }
-//     setEditVisible(true);
-//   };
-
-//   return (
-//     <>
-//       <Button
-//               type="submit"
-//               fullWidth
-//               variant="contained"
-//               sx={{ mt: 3, mb: 2 }}
-//               onClick={logoutUser}
-//             >
-//               Logout
-//             </Button>
-
-//     </>
-//   )
-// }
+import Avatar from "@mui/material/Avatar";
 
 function Row(props) {
   const user = props.row;
@@ -75,8 +42,10 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {" "}
-          {user.username}{" "}
+          <Avatar alt="ALA" src={user.picture} />
+        </TableCell>
+        <TableCell component="th" scope="row">
+          {user.username}
         </TableCell>
         <TableCell align="right">
           {user.firstname + " " + user.lastname}
@@ -110,25 +79,6 @@ function Row(props) {
   );
 }
 
-// Row.propTypes = {
-//   row: PropTypes.shape({
-//     calories: PropTypes.number.isRequired,
-//     carbs: PropTypes.number.isRequired,
-//     fat: PropTypes.number.isRequired,
-//     history: PropTypes.arrayOf(
-//       PropTypes.shape({
-//         amount: PropTypes.number.isRequired,
-//         customerId: PropTypes.string.isRequired,
-//         date: PropTypes.string.isRequired,
-//       }),
-//     ).isRequired,
-//     name: PropTypes.string.isRequired,
-//     price: PropTypes.number.isRequired,
-//     protein: PropTypes.number.isRequired,
-//   }).isRequired,
-// };
-
-//the top of the table
 export default function SystemAdmin(props) {
   const [numberUsers, setNumberUsers] = useState(null);
   const [users, setUsers] = useState([]);
@@ -141,30 +91,6 @@ export default function SystemAdmin(props) {
     setUsers(props.users);
   }, [props.users]);
 
-  // const renderTable = () => {
-  //   <Table aria-label="collapsible table">
-  //       <TableHead>
-  //         <TableRow>
-  //           <TableCell />
-  //           <TableCell>Username</TableCell>
-  //           <TableCell align="right">Full Name</TableCell>
-  //           <TableCell align="right">Date Of Birth</TableCell>
-  //           <TableCell align="right">Address</TableCell>
-  //           <TableCell align="right">Email</TableCell>
-  //         </TableRow>
-  //       </TableHead>
-  //       <TableBody>
-  //         {users &&
-  //           users.map((user) => (
-  //             <Row
-  //               key={user?.username}
-  //               row={user}
-  //               sendDeleteUser={sendDeleteUser}
-  //             />
-  //           ))}
-  //       </TableBody>
-  //     </Table>
-  // }
 
   const sendDeleteUser = (user) => {
     props.sendDeleteUser(user);
@@ -172,6 +98,7 @@ export default function SystemAdmin(props) {
   };
 
   const logoutUser = () => {
+    sessionStorage.clear()
     props.sendHide();
   };
 
@@ -194,6 +121,7 @@ export default function SystemAdmin(props) {
         <TableHead>
           <TableRow>
             <TableCell>No. {numberUsers}</TableCell>
+            <TableCell></TableCell>
             <TableCell>Username</TableCell>
             <TableCell align="right">Full Name</TableCell>
             <TableCell align="right">Date Of Birth</TableCell>
@@ -215,60 +143,4 @@ export default function SystemAdmin(props) {
       </Table>
     </TableContainer>
   );
-}
-
-{
-  /* <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <TextField
-                        margin="normal"
-                        // fullWidth
-                        id="usernameEdit"
-                        label="Username"
-                        name="usernameEdit"
-                        placeholder="AA"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        margin="normal"
-                        // fullWidth
-                        id="passwordEdit"
-                        label="Password"
-                        name="passwordEdit"
-                      />
-                    </TableCell>
-                    <TableCell align="right">
-                      <TextField
-                        margin="normal"
-                        // fullWidth
-                        id="passwordVerEdit"
-                        label="Confirm Password"
-                        name="passwordVerEdit"
-                      />
-                    </TableCell>
-                    <TableCell align="right">
-                      <TextField
-                        margin="normal"
-                        // fullWidth
-                        id="passwordVerEdit"
-                        label="Confirm Password"
-                        name="passwordVerEdit"
-                      />
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow key={users.date}>
-                    <TableCell component="th" scope="row">
-                      {users.date}
-                    </TableCell>
-                    <TableCell>{users.username}</TableCell>
-                    <TableCell align="right">{users.firstname}</TableCell>
-                    <TableCell align="right"> {users.lastname}</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table> */
 }
