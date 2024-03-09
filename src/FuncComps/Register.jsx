@@ -53,6 +53,7 @@ export default function Register(props) {
     width: 1,
   });
 
+  //changes the file format to base64 to be able to put in localstorage
   const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -62,6 +63,7 @@ export default function Register(props) {
     });
   };
 
+  //checks for date validity
   function isDateValid(dateString) {
     // Check if the input is a valid date string
     if (!dateString || !Date.parse(dateString)) {
@@ -86,7 +88,7 @@ export default function Register(props) {
     return inputDate < eighteenYearsAgo && inputDate > oneHundredTwentyYearsAgo;
   }
 
-  //updating the state with the inputs
+  //updating the state with the inputs, and updates the errors state with the fitting message to the user.
   const handleChange = (event) => {
     setSuccess(false)
     const { id, value } = event.target;
@@ -201,11 +203,13 @@ export default function Register(props) {
     console.log(user);
   };
 
+  //handles changing the number field 
   const numberChange = (newValue) => {
     setValue(newValue);
     handleChange({ target: { id: "phone", value: newValue } });
   };
 
+  //changes the format of the date to remove the time part of it
   const dateChange = (newValue) => {
     if (isDateValid(newValue.$d)) {
       let date = new Date(newValue.$d).toLocaleDateString("en-GB", {
@@ -224,6 +228,7 @@ export default function Register(props) {
     }
   };
 
+  //handles the file upload and makes sure its of a fitting type .jpg or .jpeg
   const fileChange = (target) => {
     //console.log('Selected files:', target.files);
     const { id, files } = target;
@@ -242,7 +247,7 @@ export default function Register(props) {
     }
   };
 
-  //can be called registerUser and the logic put in the if instead
+  //handles the submit before calling the registerUser function
   const handleSubmit = (event) => {
     event.preventDefault();
     let errors = { state: false };
@@ -253,17 +258,12 @@ export default function Register(props) {
     }
     setErrorState((prev) => (prev = errors));
     console.log(errorState);
-    // if (!user.username) {
-    //   setErrorState( (prev) =>  prev = {...errorState, state : true, "username" : "This field is required" })
-    // }
-    // if (!user.password) {
-    //   setErrorState((prev) =>  prev = {...errorState, state : true, "password" : "This field is required" })
-    // }
     if (!errors.state) {
       registerUser();
     }
   };
 
+  //handles registering the user and updating the users list inthe app component for ensuring one source of truth
   const registerUser = () => {
     let sameUser = props.usersProp.find((temp) => temp.email == user.email);
     if (sameUser) {
@@ -290,6 +290,7 @@ export default function Register(props) {
     { label: "Jerusalem" },
   ];
 
+  //part of the city autocomplete field, handles the change of it
   const handleTagChange = (event) => {
     console.log(event.target);
     const { id, innerText } = event.target;

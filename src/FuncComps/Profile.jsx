@@ -23,6 +23,7 @@ export default function Profile(props) {
     logoutUser(user.email);
   };
 
+  //logs the user out and ensures email parity , handling session storage clearing
   const logoutUser = (email) => {
     let userToVerify = JSON.parse(sessionStorage.getItem("loggedUser"));
     if (userToVerify.email == email) {
@@ -34,6 +35,7 @@ export default function Profile(props) {
     }
   };
 
+  //handles showing the edit user details component
   const showEdit = () => {
     if (editVisible) {
       setEditVisible(false);
@@ -42,6 +44,7 @@ export default function Profile(props) {
     setEditVisible(true);
   };
 
+  //sends the user to edit with updated fields to app, making sure one source of truth is kept 
   const userToEdit = (user) => {
     props.sendUpdateUser(user);
     showEdit();

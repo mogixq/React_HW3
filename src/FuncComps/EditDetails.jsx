@@ -32,6 +32,7 @@ export default function EditDetails(props) {
     width: 1,
   });
 
+  //changes the file format to base64 to be able to put in localstorage
   const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -41,6 +42,7 @@ export default function EditDetails(props) {
     });
   };
 
+  //checks for date validity
   function isDateValid(dateString) {
     // Check if the input is a valid date string
     if (!dateString || !Date.parse(dateString)) {
@@ -67,7 +69,7 @@ export default function EditDetails(props) {
     return inputDate < eighteenYearsAgo && inputDate > oneHundredTwentyYearsAgo;
   }
 
-  //updating the state with the inputs
+  //updating the state with the inputs, and updates the errors state with the fitting message to the user.
   const handleChange = (event) => {
     console.log(event);
     const { id, value } = event.target;
@@ -169,11 +171,13 @@ export default function EditDetails(props) {
     console.log(user);
   };
 
+  //handles changing the number field 
   const numberChange = (newValue) => {
     setValue(newValue);
     handleChange({ target: { id: "phone", value: newValue } });
   };
 
+  //changes the format of the date to remove the time part of it
   const dateChange = (newValue) => {
     if (isDateValid(newValue.$d)) {
       handleChange({ target: { id: "date", value: newValue.$d } });
@@ -186,6 +190,7 @@ export default function EditDetails(props) {
     }
   };
 
+  //handles the file upload and makes sure its of a fitting type .jpg or .jpeg
   const fileChange = (target) => {
     //console.log('Selected files:', target.files);
     const { id, files } = target;
@@ -204,7 +209,7 @@ export default function EditDetails(props) {
     }
   };
 
-  //can be called registerUser and the logic put in the if instead
+  //handles the submit before sending the user to app, osot
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!errorState.state) {
@@ -229,6 +234,7 @@ export default function EditDetails(props) {
     { label: "Jerusalem" },
   ];
 
+  //part of the city autocomplete field, handles the change of it
   const handleTagChange = (event) => {
     console.log(event.target);
     const { id, innerText } = event.target;
