@@ -253,7 +253,7 @@ export default function EditDetails(props) {
       >
         <CloseIcon />
       </ChipDelete>
-      Register <br />
+      Values unchange would not be replaced <br />
       <Box
         component="form"
         sx={{

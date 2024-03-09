@@ -12,12 +12,13 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Typography from "@mui/material/Typography";
 import Autocomplete from "@mui/material/Autocomplete";
 import Avatar from "@mui/material/Avatar";
+import { green } from '@mui/material/colors';
 
 export default function Register(props) {
   const [user, setUser] = useState({
     username: "",
     password: "",
-    passwordVer: "", //also not needed in localstorage
+    passwordVer: "",
     picture: "",
     firstname: "",
     lastname: "",
@@ -29,6 +30,16 @@ export default function Register(props) {
   });
   const [value, setValue] = useState("");
   const [errorState, setErrorState] = useState({ state: false });
+  const [success, setSuccess] = React.useState(false);
+
+  const buttonSx = {
+    ...(success && {
+      bgcolor: green[500],
+      "&:hover": {
+        bgcolor: green[700],
+      },
+    }),
+  };
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -77,6 +88,7 @@ export default function Register(props) {
 
   //updating the state with the inputs
   const handleChange = (event) => {
+    setSuccess(false)
     const { id, value } = event.target;
     if (!value) {
       setErrorState({
@@ -201,7 +213,7 @@ export default function Register(props) {
         month: "2-digit",
         year: "numeric",
         separator: "/",
-      })
+      });
       handleChange({ target: { id: "date", value: date } });
     } else {
       setErrorState({
@@ -239,7 +251,7 @@ export default function Register(props) {
         errors = { ...errors, state: true, [field]: "This field is required" };
       }
     }
-    setErrorState((prev) => prev = errors);
+    setErrorState((prev) => (prev = errors));
     console.log(errorState);
     // if (!user.username) {
     //   setErrorState( (prev) =>  prev = {...errorState, state : true, "username" : "This field is required" })
@@ -258,6 +270,7 @@ export default function Register(props) {
       return;
     }
     props.sendNewUser(user);
+    setSuccess(true);
   };
 
   const buttonStyles = {
@@ -343,7 +356,13 @@ export default function Register(props) {
             role={undefined}
             variant="contained"
             tabIndex={-1}
-            startIcon={user.picture ? <Avatar alt="Profile" src={user.picture} /> :  <CloudUploadIcon />}
+            startIcon={
+              user.picture ? (
+                <Avatar alt="Profile" src={user.picture} />
+              ) : (
+                <CloudUploadIcon />
+              )
+            }
             sx={buttonStyles}
           >
             Upload Picture
@@ -396,15 +415,6 @@ export default function Register(props) {
           )}
         </LocalizationProvider>
         <br />
-        {/* <TextField
-          required
-          error={errorState.city} // Display error if message exists
-          helperText={errorState.city}
-          id="city"
-          label="City"
-          variant="standard"
-          onChange={handleChange}
-        /> */}
 
         <Autocomplete
           options={cities}
@@ -444,9 +454,9 @@ export default function Register(props) {
           onChange={numberChange}
         />
         <br />
-        <button type="submit" disabled={errorState.state}>
+        <Button type="submit" sx={buttonSx} disabled={errorState.state}>
           Submit
-        </button>
+        </Button>
       </Box>
     </div>
   );

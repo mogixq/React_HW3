@@ -3,31 +3,11 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useEffect } from "react";
-
-// function Copyright(props) {
-//   return (
-//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
-
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
@@ -38,20 +18,15 @@ export default function SignIn(props) {
     loginUser(data);
   };
 
-  //   useEffect(() => {
-  //     console.log(props.usersProp);
-  //   },[] );
-
   const loginUser = (data) => {
     let username = data.get("usernameLog");
     let password = data.get("passwordLog");
 
     let user = props.usersProp.find(
       (user) => user.username == username && user.password == password
-    ); // use only .find to get the user object or undefined
+    ); 
 
     if (user && !sessionStorage.loggedUser) {
-      // check if the user is not undefined
       console.log("USER FOUND, logging in");
       sessionStorage.setItem("loggedUser", JSON.stringify(user));
       sendLogged("userIsLogged");

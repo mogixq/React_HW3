@@ -4,11 +4,9 @@ import Register from "./FuncComps/Register";
 import Login from "./FuncComps/Login";
 import Profile from "./FuncComps/Profile";
 import SystemAdmin from "./FuncComps/SystemAdmin";
-import { Update } from "@mui/icons-material";
 
 function App() {
   const [users, setUsers] = useState(false);
-  // const [showLogged, setShowLogged] = useState("");
   const [pleaseConnect, setPleaseConnect] = useState("Please Log in");
   const [adminIsLogged, setAdminIsLogged] = useState(false);
   const [userIsLogged, setUserIsLogged] = useState(false);
@@ -16,6 +14,7 @@ function App() {
   useEffect(() => {
     const loadedUsers = JSON.parse(localStorage.getItem("users")) || [];
     setUsers(loadedUsers);
+    sessionStorage.clear();
   }, []);
 
   useEffect(() => {
@@ -25,12 +24,7 @@ function App() {
     localStorage.setItem("users", JSON.stringify(users));
   }, [users]);
 
-  // const loadUsers = () => {
-  //   setUsers(JSON.parse(localStorage.getItem("users")));
-  // };
-
   const setLogged = (logged) => {
-    //change name of set logged
     if (logged == "userIsLogged") {
       setPleaseConnect("");
       setUserIsLogged(true);
@@ -46,7 +40,6 @@ function App() {
   const setNewUser = (newUser) => {
     console.log("newUser in setNewUser ", newUser);
     if (users == null) {
-      //change to !users or check if users empty
       setUsers([newUser]);
       return;
     }
@@ -61,23 +54,12 @@ function App() {
   };
 
   const deleteUser = (user) => {
-    // let updatedArr = users.map((temp) =>
-    //   {if (users.find(user)) {
-    //     users.splice(users.find(user), 1)
-    //   }}
-    // )
-    // setUsers(updatedArr)
     let tempUser = users.find((temp) => user.email == temp.email);
 
     if (tempUser) {
       let keep = users.filter((temp) => temp.email !== user.email);
-      // if (users.length == 1) {
-      //   setUsers([]);
-      //   return;
-      // }
       console.log(keep);
       setUsers(keep);
-      // localStorage.setItem("users", JSON.stringify(users));
     } else {
       console.log("user not found");
     }
@@ -98,7 +80,7 @@ function App() {
     <>
       <Register usersProp={users} sendNewUser={setNewUser} />
       <Login usersProp={users} sendLogged={setLogged} />
-      {pleaseConnect} {/*maybe put this line in the profile app itself */}
+      {pleaseConnect}
       {userIsLogged && (
         <Profile sendHide={hideProfile} sendUpdateUser={editUser} />
       )}
