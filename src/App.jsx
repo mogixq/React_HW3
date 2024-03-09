@@ -9,7 +9,6 @@ import { Update } from "@mui/icons-material";
 
 function App() {
   const [users, setUsers] = useState(false);
-  // const [showLogged, setShowLogged] = useState("");
   const [pleaseConnect, setPleaseConnect] = useState("Please Log in");
   const [adminIsLogged, setAdminIsLogged] = useState(false);
   const [userIsLogged, setUserIsLogged] = useState(false);
@@ -31,7 +30,6 @@ function App() {
   // };
 
   const setLogged = (logged) => {
-    //change name of set logged
     if (logged == "userIsLogged") {
       setPleaseConnect("");
       setUserIsLogged(true);

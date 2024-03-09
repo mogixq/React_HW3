@@ -123,20 +123,14 @@ export default function Register(props) {
     }
   };
 
-  //add the user to the user in localstorage
   const registerUser = () => {
-    //TO ADD :check if local storage is null otherwise no spread operator
     let sameUser = props.usersProp.find((temp) => temp.email == user.email);
     if (sameUser) {
       return;
     }
-    //let usersNew = [...props.usersProp, user];
-    //localStorage.setItem("users", JSON.stringify(usersNew));
     props.sendNewUser(user);
-    //needs to be sent to parent!!!!!!!!!!!!!!!!!@@#!#!@#@!#@!
   };
 
-  //{'\u00A0'} spacer like &nbsp
   return (
     <div
       style={{
