@@ -35,7 +35,7 @@ export default function SignIn(props) {
     } else if (
       !user &&
       data.get("usernameLog") == "admin" &&
-      data.get("passwordLog") == "admin" &&
+      data.get("passwordLog") == "ad12343211ad" &&
       !sessionStorage.loggedUser
     ) {
       sessionStorage.setItem("loggedUser", "admin");
