@@ -21,15 +21,19 @@ import ChipDelete from "@mui/joy/ChipDelete";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import Avatar from "@mui/material/Avatar";
 
+// Row component: Represents a single row in the user table
 function Row(props) {
+  // State variables
   const user = props.row;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false); // Controls collapsable user profile
 
+  // Function to trigger user editing
   const userToEdit = (user) => {
     props.userToEdit(user);
   };
 
   return (
+    // Render a row with user details and a collapsable profile section
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
@@ -79,34 +83,39 @@ function Row(props) {
   );
 }
 
+// SystemAdmin component: Main component for managing user profiles
 export default function SystemAdmin(props) {
-  const [numberUsers, setNumberUsers] = useState(null);
-  const [users, setUsers] = useState([]);
+  const [numberUsers, setNumberUsers] = useState(null); // Number of users
+  const [users, setUsers] = useState([]); // Array of user objects
 
+  // Update user count when users change
   useEffect(() => {
     setNumberUsers(users.length);
   }, [users]);
 
+  // Fetch and set user data
   useEffect(() => {
     setUsers(props.users);
   }, [props.users]);
 
-
+  // Function to handle user deletion
   const sendDeleteUser = (user) => {
     props.sendDeleteUser(user);
     setUsers(props.users);
   };
 
+  // Function to handle logout
   const logoutUser = () => {
-    sessionStorage.clear()
-    props.sendHide();
+    sessionStorage.clear();
+    props.sendHide(); // Call parent component's hide function
   };
-
+ // Function to trigger user editing
   const userToEdit = (user) => {
     props.userToEdit(user);
   };
 
   return (
+    // Render the SystemAdmin UI
     <TableContainer component={Paper}>
       <Button
         type="submit"

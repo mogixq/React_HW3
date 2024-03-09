@@ -46,7 +46,6 @@ export default function Profile(props) {
     props.sendUpdateUser(user);
     showEdit();
   };
-  //################################################################################################
 
   const UserCardContainer = styled("div")({
     border: "solid #1E90FF 2px",
@@ -131,44 +130,5 @@ export default function Profile(props) {
         <EditDetails userToEdit={userToEdit} user={user} closeMe={showEdit} />
       )}
     </UserCardContainer>
-  );
-
-  return (
-    <div
-      style={{
-        border: "solid #1E90FF 2px",
-        margin: 10,
-        padding: 10,
-        borderRadius: 10,
-        alignItems: "center",
-      }}
-    >
-      <Avatar alt="Profile" src={user.picture} />
-      <div>
-        Profile <br />
-        <h3>
-          {user.firstname} {user.lastname}
-        </h3>
-        <span>{user.email}</span>
-        <br />
-        <span>{user.street}</span>
-        <br />
-        <span>{user.date}</span>
-        <br />
-        <button className="btn btn-secondary" onClick={showEdit}>
-          Edit Details
-        </button>
-        <button>
-          <a href="https://oldschool.runescape.com/">Game</a>
-        </button>
-        <button className="btn btn-danger" onClick={handleLogout}>
-          Logout
-        </button>{" "}
-        <br />
-        {editVisible && (
-          <EditDetails userToEdit={userToEdit} user={user} closeMe={showEdit} />
-        )}
-      </div>
-    </div>
   );
 }

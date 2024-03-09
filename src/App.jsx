@@ -6,17 +6,20 @@ import Profile from "./FuncComps/Profile";
 import SystemAdmin from "./FuncComps/SystemAdmin";
 
 function App() {
-  const [users, setUsers] = useState(false);
-  const [pleaseConnect, setPleaseConnect] = useState("Please Log in");
-  const [adminIsLogged, setAdminIsLogged] = useState(false);
-  const [userIsLogged, setUserIsLogged] = useState(false);
+  // State variables
+  const [users, setUsers] = useState(false); // Stores array of user objects
+  const [pleaseConnect, setPleaseConnect] = useState("Please Log in"); // Display login prompt
+  const [adminIsLogged, setAdminIsLogged] = useState(false); // Track admin login status
+  const [userIsLogged, setUserIsLogged] = useState(false); // Track user login status
 
+  // Fetch users from local storage on component mount
   useEffect(() => {
     const loadedUsers = JSON.parse(localStorage.getItem("users")) || [];
     setUsers(loadedUsers);
     sessionStorage.clear();
   }, []);
 
+  // Save updated users to local storage
   useEffect(() => {
     if (users === false) {
       return;
@@ -24,6 +27,7 @@ function App() {
     localStorage.setItem("users", JSON.stringify(users));
   }, [users]);
 
+  // Handle login status updates
   const setLogged = (logged) => {
     if (logged == "userIsLogged") {
       setPleaseConnect("");
@@ -37,6 +41,7 @@ function App() {
     }
   };
 
+  // Add a new user to the users array
   const setNewUser = (newUser) => {
     console.log("newUser in setNewUser ", newUser);
     if (users == null) {
@@ -47,12 +52,14 @@ function App() {
     setUsers(usersNew);
   };
 
+  // Reset login states and display login prompt
   const hideProfile = () => {
     setUserIsLogged(false);
     setAdminIsLogged(false);
     setPleaseConnect("Please Log in");
   };
 
+  // Remove a user from the users array
   const deleteUser = (user) => {
     let tempUser = users.find((temp) => user.email == temp.email);
 
@@ -65,6 +72,7 @@ function App() {
     }
   };
 
+  // Update an existing user in the users array
   const editUser = (user) => {
     let updatedArr = users.map((temp) => {
       if (temp.email == user.email) {
@@ -76,6 +84,7 @@ function App() {
     setUsers(updatedArr);
   };
 
+  // Render components based on login status
   return (
     <>
       <Register usersProp={users} sendNewUser={setNewUser} />
