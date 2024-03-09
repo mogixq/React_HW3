@@ -36,15 +36,16 @@ export default function Profile(props) {
   };
 
   const userToEdit = (user) => {
-    props.sendUpdateUser(user)
-  }
+    props.sendUpdateUser(user);
+  };
 
   return (
     <div
       style={{
-        border: "solid black 2px",
+        border: "solid #1E90FF 2px",
         margin: 10,
         padding: 10,
+        borderRadius: 10,
       }}
     >
       Profile <br />
@@ -57,9 +58,16 @@ export default function Profile(props) {
       <br />
       <span>{user.date}</span>
       <br />
-      <button onClick={showEdit}>Edit Details</button>
-      <button>Game</button>
-      <button onClick={handleLogout}>Logout</button> <br />
+      <button className="btn btn-secondary" onClick={showEdit}>
+        Edit Details
+      </button>
+      <button>
+        <a href="https://oldschool.runescape.com/">Game</a>
+      </button>
+      <button className="btn btn-danger" onClick={handleLogout}>
+        Logout
+      </button>{" "}
+      <br />
       {editVisible && <EditDetails userToEdit={userToEdit} user={user} />}
     </div>
   );

@@ -50,9 +50,12 @@ export default function Register(props) {
         [id]: "This field is required",
       }); // Update error message
       return;
-    } 
+    }
     // Check for English characters only
-    if (id == "username" && (!value.match(/^[a-zA-Z\s\d\-\_!@#$%^&*()+\=\[\]{};':",./<>?]*$/))) {
+    if (
+      id == "username" &&
+      !value.match(/^[a-zA-Z\s\d\-\_!@#$%^&*()+\=\[\]{};':",./<>?]*$/)
+    ) {
       setErrorState({
         ...errorState,
         state: true,
@@ -68,7 +71,7 @@ export default function Register(props) {
       });
       return;
     }
-      
+
     setErrorState({ ...errorState, state: false, [id]: "" });
     setUser((prevState) => ({ ...prevState, [id]: value }));
     console.log(errorState);
@@ -81,8 +84,8 @@ export default function Register(props) {
   };
 
   const dateChange = (newValue) => {
-    handleChange({target: {id: "date", value: newValue}})
-  }
+    handleChange({ target: { id: "date", value: newValue } });
+  };
 
   const fileChange = (target) => {
     //console.log('Selected files:', target.files);
@@ -91,9 +94,9 @@ export default function Register(props) {
     const allowedTypes = ["image/jpeg", "image/jpg"];
 
     if (allowedTypes.includes(files[0].type)) {
-      handleChange({target: { id: id, value: files[0] }});
+      handleChange({ target: { id: id, value: files[0] } });
     } else {
-      console.log("wrong file")
+      console.log("wrong file");
       //handle exception
     }
   };
@@ -123,9 +126,9 @@ export default function Register(props) {
   //add the user to the user in localstorage
   const registerUser = () => {
     //TO ADD :check if local storage is null otherwise no spread operator
-    let sameUser = props.usersProp.find((temp) => temp.email == user.email)
+    let sameUser = props.usersProp.find((temp) => temp.email == user.email);
     if (sameUser) {
-      return
+      return;
     }
     //let usersNew = [...props.usersProp, user];
     //localStorage.setItem("users", JSON.stringify(usersNew));
@@ -137,9 +140,10 @@ export default function Register(props) {
   return (
     <div
       style={{
-        border: "solid black 2px",
+        border: "solid #1E90FF 2px",
         margin: 10,
         padding: 10,
+        borderRadius: 10,
       }}
     >
       Register <br />
@@ -193,8 +197,12 @@ export default function Register(props) {
           startIcon={<CloudUploadIcon />}
         >
           Upload Picture
-          <VisuallyHiddenInput id="picture" type="file" accept=".jpg,.jpeg"
-          onChange={(event) => fileChange(event.target)}/>
+          <VisuallyHiddenInput
+            id="picture"
+            type="file"
+            accept=".jpg,.jpeg"
+            onChange={(event) => fileChange(event.target)}
+          />
         </Button>
         <br />
         <TextField
